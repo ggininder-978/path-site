@@ -3,8 +3,8 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   // TODO: Replace with the actual domain once purchased
-  // This is a placeholder — change only this one line when the domain is finalized
-  site: 'https://path-site.com',
+  // 之後購買正式網域後，只需更改這一行
+  site: 'https://path-site-gilt.vercel.app',
 
   integrations: [
     sitemap(),
