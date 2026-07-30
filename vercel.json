@@ -2,10 +2,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "framework": "astro",
-  "functions": {
-    "api/auth.js": {
-      "runtime": "nodejs20.x"
-    }
-  }
+  "framework": "astro"
 }
