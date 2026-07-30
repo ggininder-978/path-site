@@ -1,0 +1,121 @@
+---
+// BaseLayout.astro — SEO-complete base layout for all pages
+// Accepts all necessary props for title, description, OG tags, and JSON-LD
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  ogLocale?: string;
+  // Article-specific props (for JSON-LD)
+  articleData?: {
+    pubDate?: Date;
+    location?: string;
+    keyword?: string;
+  };
+}
+
+const {
+  title,
+  description,
+  canonicalUrl,
+  ogImage = '/images/og-default.jpg',
+  ogType = 'website',
+  ogLocale = 'zh_TW',
+  articleData,
+} = Astro.props;
+
+const siteUrl = import.meta.env.SITE || 'https://path-site.com';
+const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
+const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href;
+
+// JSON-LD structured data (Article type with contentLocation for local SEO)
+const jsonLd = articleData
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      datePublished: articleData.pubDate?.toISOString(),
+      image: ogImageAbsolute,
+      contentLocation: {
+        '@type': 'Place',
+        name: articleData.location || '埔里',
+        address: {
+          '@type': 'PostalAddress',
+          addressRegion: '南投縣',
+          addressCountry: 'TW',
+        },
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'PATH',
+        url: siteUrl,
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonical,
+      },
+    }
+  : null;
+---
+
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph (Facebook, IG, 小紅書 link previews) -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageAbsolute} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="PATH" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbsolute} />
+
+    <!-- JSON-LD Structured Data (Article + contentLocation for local/food SEO) -->
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+    )}
+
+    <!-- Favicon placeholder -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a href="/" class="site-logo" aria-label="PATH — 回到首頁">PATH</a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="/eats/puli/">食記 · 埔里</a>
+        <!-- Future verticals will be added here -->
+        <!-- <a href="/trip/puli/">旅記 · 埔里</a> -->
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>© {new Date().getFullYear()} PATH — 食記與旅記</p>
+    </footer>
+  </body>
+</html>

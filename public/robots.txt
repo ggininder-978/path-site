@@ -1,0 +1,8 @@
+# TODO: Replace https://path-site.com with the actual domain before submitting sitemap to Google Search Console
+User-agent: *
+Allow: /
+
+# Block CMS admin from search engines
+Disallow: /admin/
+
+Sitemap: https://path-site.com/sitemap-index.xml

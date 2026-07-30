@@ -1,0 +1,90 @@
+# Decap CMS Configuration
+# Documentation: https://decapcms.org/docs/configuration-options/
+#
+# Authentication: self-hosted GitHub OAuth proxy
+# backend.name is set to "github" as specified
+# backend.base_url points to our own Vercel serverless OAuth proxy
+# DO NOT use netlify-identity or DecapBridge (both are external dependencies)
+
+backend:
+  name: github
+  # TODO: Replace with your actual GitHub repo path (e.g. "your-username/path-site")
+  repo: ggininder-978/path-site
+  branch: main
+  # TODO: Replace with your deployed Vercel project URL (e.g. "https://path-site.vercel.app")
+  # This must match the "Homepage URL" in your GitHub OAuth App settings
+  base_url: https://TODO.vercel.app
+  auth_endpoint: /api/auth
+
+# Media files — uploaded images go here (relative to project root)
+media_folder: public/images/eats/puli
+public_folder: /images/eats/puli
+
+# Locale for the CMS editor UI
+locale: zh_Hant
+
+# Disable draft saving in editorial workflow for simplicity
+# (the "draft" field in content handles unpublished state)
+publish_mode: simple
+
+collections:
+  - name: eats
+    label: 食記文章
+    label_singular: 食記文章
+    folder: src/content/eats/puli
+    create: true
+    slug: "{{slug}}"
+    # Filename will be the article slug (auto-generated from title)
+    extension: md
+    format: frontmatter
+    fields:
+      - label: 標題
+        name: title
+        widget: string
+        hint: 文章標題，也會出現在 Google 搜尋結果中
+
+      - label: 摘要 / Meta Description
+        name: description
+        widget: string
+        hint: 簡短說明這篇文章的內容（建議 60–120 字），會顯示在 Google 搜尋結果的標題下方
+
+      - label: 目標關鍵字
+        name: keyword
+        widget: string
+        hint: 這篇文章主要針對的 SEO 關鍵字（只供你自己追蹤用，不會顯示在網站上）
+
+      - label: 地點
+        name: location
+        widget: string
+        default: 埔里
+        hint: 文章對應的城市或地區名稱（預設「埔里」）
+
+      - label: 封面圖片
+        name: coverImage
+        widget: image
+        required: false
+        hint: 上傳文章封面圖片（會用於 Google / 社群媒體預覽）
+
+      - label: 封面圖片 Alt 文字
+        name: coverAlt
+        widget: string
+        required: false
+        hint: 描述封面圖片內容（用於 SEO 與視覺障礙讀者的輔助說明）
+
+      - label: 發布日期
+        name: pubDate
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        default: ""
+
+      - label: 草稿
+        name: draft
+        widget: boolean
+        default: false
+        hint: 開啟「草稿」代表這篇文章不會公開顯示，可以先儲存、之後再發布
+
+      - label: 文章內文
+        name: body
+        widget: markdown
+        hint: 在這裡撰寫文章內容，支援標題、段落、圖片、清單等格式

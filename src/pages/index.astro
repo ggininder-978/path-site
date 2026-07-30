@@ -1,0 +1,59 @@
+---
+// src/pages/index.astro — Homepage
+// Shows the latest published articles across all verticals
+
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Fetch all non-draft eats articles, sorted newest first
+const allEats = await getCollection('eats', ({ data }) => !data.draft);
+const sorted = allEats.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const siteTitle = 'PATH — 食記與旅記';
+const siteDescription = '記錄台灣在地飲食與旅行風景。現在從埔里出發。';
+---
+
+<BaseLayout title={siteTitle} description={siteDescription}>
+  <section>
+    <p class="section-heading">最新文章</p>
+
+    {sorted.length === 0 ? (
+      <p style="color: var(--color-text-muted);">
+        文章即將上線，敬請期待。
+      </p>
+    ) : (
+      <ul class="article-list">
+        {sorted.map((post) => {
+          // Build the URL from the collection entry ID
+          // Entry ID format: "puli/slug" → URL: /eats/puli/slug/
+          const [city, ...slugParts] = post.id.split('/');
+          const rawSlug = slugParts.join('/');
+          const slug = rawSlug.replace(/\.md$/, '');
+          const url = `/eats/${city}/${slug}/`;
+
+          return (
+            <li class="article-card">
+              <a href={url}>
+                <h2 class="article-card__title">{post.data.title}</h2>
+                <p class="article-card__meta">
+                  <span>{post.data.location}</span>
+                  <span>·</span>
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString('zh-TW', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </p>
+                <p class="article-card__description">{post.data.description}</p>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

@@ -1,0 +1,70 @@
+---
+// src/pages/eats/[city]/index.astro — City listing page
+// Handles /eats/puli/ and any future city like /eats/taizhong/
+// "city" comes from the URL segment, not hardcoded
+
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const allEats = await getCollection('eats', ({ data }) => !data.draft);
+
+  // Derive unique city slugs from content file paths
+  // File at src/content/eats/puli/slug.md → city = "puli"
+  const cities = [...new Set(allEats.map((post) => post.id.split('/')[0]))];
+
+  return cities.map((city) => ({
+    params: { city },
+    props: {
+      posts: allEats
+        .filter((post) => post.id.startsWith(city + '/'))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+      city,
+    },
+  }));
+}
+
+const { posts, city } = Astro.props;
+
+// Display name: use the location field from first post, fallback to URL city
+const locationLabel = posts[0]?.data.location ?? city;
+const pageTitle = `${locationLabel} 食記 — PATH`;
+const pageDescription = `${locationLabel}的在地飲食紀錄，精選餐廳、咖啡館與小吃推薦。`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section>
+    <h1 class="section-heading">{locationLabel} 食記</h1>
+
+    {posts.length === 0 ? (
+      <p style="color: var(--color-text-muted);">此地尚無文章，請稍後再來。</p>
+    ) : (
+      <ul class="article-list">
+        {posts.map((post) => {
+          const slugParts = post.id.split('/').slice(1);
+          const rawSlug = slugParts.join('/');
+          const slug = rawSlug.replace(/\.md$/, '');
+          const url = `/eats/${city}/${slug}/`;
+
+          return (
+            <li class="article-card">
+              <a href={url}>
+                <h2 class="article-card__title">{post.data.title}</h2>
+                <p class="article-card__meta">
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString('zh-TW', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </p>
+                <p class="article-card__description">{post.data.description}</p>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

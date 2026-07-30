@@ -1,0 +1,77 @@
+---
+// src/pages/eats/[city]/[...slug].astro — Individual article page
+// Handles /eats/puli/slug/ for all cities and all slugs
+
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const allEats = await getCollection('eats', ({ data }) => !data.draft);
+
+  return allEats.map((post) => {
+    const parts = post.id.split('/');
+    const city = parts[0];
+    // Strip .md extension from slug for clean URLs
+    const rawSlug = parts.slice(1).join('/');
+    const slug = rawSlug.replace(/\.md$/, '');
+
+    return {
+      params: { city, slug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const siteUrl = import.meta.env.SITE || 'https://path-site.com';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = post.data.coverImage
+  ? new URL(post.data.coverImage, siteUrl).href
+  : undefined;
+---
+
+<BaseLayout
+  title={`${post.data.title} — PATH`}
+  description={post.data.description}
+  canonicalUrl={canonicalUrl}
+  ogImage={ogImage}
+  ogType="article"
+  articleData={{
+    pubDate: post.data.pubDate,
+    location: post.data.location,
+    keyword: post.data.keyword,
+  }}
+>
+  <article>
+    <header class="article-header">
+      <h1 class="article-title">{post.data.title}</h1>
+      <div class="article-meta">
+        <span>{post.data.location}</span>
+        <span>·</span>
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toLocaleDateString('zh-TW', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
+      </div>
+    </header>
+
+    {post.data.coverImage && (
+      <img
+        src={post.data.coverImage}
+        alt={post.data.coverAlt ?? post.data.title}
+        class="article-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
+
+    <div class="article-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
