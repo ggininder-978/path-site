@@ -13,7 +13,7 @@ backend:
   branch: main
   # TODO: Replace with your deployed Vercel project URL (e.g. "https://path-site.vercel.app")
   # This must match the "Homepage URL" in your GitHub OAuth App settings
-  base_url: https://path-site-5x268p66f-slchiang71-9976s-projects.vercel.app
+  base_url: https://path-site-gilt.vercel.app
   auth_endpoint: /api/auth
 
 # Media files — uploaded images go here (relative to project root)
