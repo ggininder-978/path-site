@@ -53,11 +53,18 @@ collections:
         widget: string
         hint: 這篇文章主要針對的 SEO 關鍵字（只供你自己追蹤用，不會顯示在網站上）
 
-      - label: 地點
-        name: location
+      - label: 地點 (中文顯示名稱)
+        name: locationName
         widget: string
         default: 埔里
-        hint: 文章對應的城市或地區名稱（預設「埔里」）
+        hint: 文章對應的城市或地區中文名稱（預設「埔里」）
+
+      - label: 網址代碼 (英文Slug)
+        name: locationSlug
+        widget: select
+        options: ["puli"]
+        default: "puli"
+        hint: 這會構成網址的一部份，請勿隨意填寫（目前預設 puli）
 
       - label: 封面圖片
         name: coverImage

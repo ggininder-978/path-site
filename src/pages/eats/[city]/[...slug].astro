@@ -9,10 +9,9 @@ export async function getStaticPaths() {
   const allEats = await getCollection('eats', ({ data }) => !data.draft);
 
   return allEats.map((post) => {
-    const parts = post.id.split('/');
-    const city = parts[0];
-    // Strip .md extension from slug for clean URLs
-    const rawSlug = parts.slice(1).join('/');
+    const city = post.data.locationSlug;
+    // Strip directories and .md extension from slug for clean URLs
+    const rawSlug = post.id.split('/').pop() || post.id;
     const slug = rawSlug.replace(/\.md$/, '');
 
     return {
@@ -40,7 +39,7 @@ const ogImage = post.data.coverImage
   ogType="article"
   articleData={{
     pubDate: post.data.pubDate,
-    location: post.data.location,
+    location: post.data.locationName,
     keyword: post.data.keyword,
   }}
 >
@@ -48,7 +47,7 @@ const ogImage = post.data.coverImage
     <header class="article-header">
       <h1 class="article-title">{post.data.title}</h1>
       <div class="article-meta">
-        <span>{post.data.location}</span>
+        <span>{post.data.locationName}</span>
         <span>·</span>
         <time datetime={post.data.pubDate.toISOString()}>
           {post.data.pubDate.toLocaleDateString('zh-TW', {

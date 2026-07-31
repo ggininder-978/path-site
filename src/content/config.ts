@@ -12,9 +12,13 @@ const eatsCollection = defineCollection({
     // Primary target keyword — for the owner's keyword-tracking spreadsheet, NOT rendered on page
     keyword: z.string(),
 
-    // Location name (城市/地區) — used in JSON-LD contentLocation and URL path
+    // Location display name (城市/地區) — shown to users and in JSON-LD
     // Default is "埔里"; future cities will have different values here
-    location: z.string().default('埔里'),
+    locationName: z.string().default('埔里'),
+
+    // Location slug (URL代碼) — used to build the URL path
+    // Default is "puli"; future cities will have different values here
+    locationSlug: z.string().default('puli'),
 
     // Cover image path (relative to /public)
     coverImage: z.string().optional(),

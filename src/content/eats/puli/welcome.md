@@ -2,7 +2,8 @@
 title: "PATH 網站上線了"
 description: "PATH 是一個記錄在地飲食與旅行風景的內容網站，從埔里出發，走訪台灣各地值得記憶的味道與地方。"
 keyword: "埔里食記"
-location: "埔里"
+locationName: "埔里"
+locationSlug: "puli"
 pubDate: 2026-07-31
 draft: false
 ---

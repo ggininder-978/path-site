@@ -26,10 +26,9 @@ const siteDescription = '記錄台灣在地飲食與旅行風景。現在從埔�
     ) : (
       <ul class="article-list">
         {sorted.map((post) => {
-          // Build the URL from the collection entry ID
-          // Entry ID format: "puli/slug" → URL: /eats/puli/slug/
-          const [city, ...slugParts] = post.id.split('/');
-          const rawSlug = slugParts.join('/');
+          // Build the URL using frontmatter slug
+          const city = post.data.locationSlug;
+          const rawSlug = post.id.split('/').pop() || post.id;
           const slug = rawSlug.replace(/\.md$/, '');
           const url = `/eats/${city}/${slug}/`;
 
@@ -38,7 +37,7 @@ const siteDescription = '記錄台灣在地飲食與旅行風景。現在從埔�
               <a href={url}>
                 <h2 class="article-card__title">{post.data.title}</h2>
                 <p class="article-card__meta">
-                  <span>{post.data.location}</span>
+                  <span>{post.data.locationName}</span>
                   <span>·</span>
                   <time datetime={post.data.pubDate.toISOString()}>
                     {post.data.pubDate.toLocaleDateString('zh-TW', {

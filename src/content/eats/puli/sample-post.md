@@ -2,7 +2,8 @@
 title: "埔里手沖咖啡地圖：在霧中找到一杯好咖啡"
 description: "埔里藏著幾間低調但認真的咖啡館，這篇帶你從產地到杯中，走一趟埔里咖啡之旅。"
 keyword: "埔里咖啡"
-location: "埔里"
+locationName: "埔里"
+locationSlug: "puli"
 coverImage: "/images/eats/puli/sample-coffee.jpg"
 coverAlt: "埔里咖啡館手沖咖啡特寫"
 pubDate: 2026-07-30

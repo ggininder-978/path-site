@@ -9,15 +9,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 export async function getStaticPaths() {
   const allEats = await getCollection('eats', ({ data }) => !data.draft);
 
-  // Derive unique city slugs from content file paths
-  // File at src/content/eats/puli/slug.md → city = "puli"
-  const cities = [...new Set(allEats.map((post) => post.id.split('/')[0]))];
+  // Derive unique city slugs from content frontmatter locationSlug
+  const cities = [...new Set(allEats.map((post) => post.data.locationSlug))];
 
   return cities.map((city) => ({
     params: { city },
     props: {
       posts: allEats
-        .filter((post) => post.id.startsWith(city + '/'))
+        .filter((post) => post.data.locationSlug === city)
         .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
       city,
     },
@@ -26,8 +25,8 @@ export async function getStaticPaths() {
 
 const { posts, city } = Astro.props;
 
-// Display name: use the location field from first post, fallback to URL city
-const locationLabel = posts[0]?.data.location ?? city;
+// Display name: use the locationName field from first post, fallback to URL city
+const locationLabel = posts[0]?.data.locationName ?? city;
 const pageTitle = `${locationLabel} 食記 — PATH`;
 const pageDescription = `${locationLabel}的在地飲食紀錄，精選餐廳、咖啡館與小吃推薦。`;
 ---
