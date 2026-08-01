@@ -6,7 +6,7 @@ locationName: "埔里"
 locationSlug: "puli"
 coverImage: "/images/eats/puli/nantou-puli-food/001-Snapinsta.app_368432225_285870030807086_5672242023705206723_n_1080-7-1.jpg"
 coverAlt: "製飯糰 Riceball 埔里店手作飯糰品牌照片"
-pubDate: 2025-03-08
+pubDate: 2026-08-02
 draft: false
 ---
 
