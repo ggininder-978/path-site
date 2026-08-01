@@ -41,17 +41,34 @@ collections:
       - label: 標題
         name: title
         widget: string
-        hint: 文章標題，也會出現在 Google 搜尋結果中
+        hint: 文章頁面上的 H1 標題，建議自然包含主要關鍵字，例如「埔里美食推薦」。
+
+      - label: SEO 標題 Title Tag
+        name: seoTitle
+        widget: string
+        required: false
+        hint: 顯示在 Google 搜尋結果和瀏覽器分頁，可和文章標題不同；建議 25–35 個中文字，放入主要關鍵字。
 
       - label: 摘要 / Meta Description
         name: description
         widget: string
-        hint: 簡短說明這篇文章的內容（建議 60–120 字），會顯示在 Google 搜尋結果的標題下方
+        hint: 簡短說明這篇文章的內容，會顯示在 Google 搜尋結果標題下方；建議 60–120 個中文字，包含主要關鍵字與吸引點。
 
       - label: 目標關鍵字
         name: keyword
         widget: string
-        hint: 這篇文章主要針對的 SEO 關鍵字（只供你自己追蹤用，不會顯示在網站上）
+        hint: 這篇文章主要針對的 SEO 關鍵字，例如「埔里美食」、「埔里早午餐」、「埔里旅遊」。
+
+      - label: 次要關鍵字
+        name: secondaryKeywords
+        widget: list
+        required: false
+        summary: "{{fields.keyword}}"
+        field:
+          label: 關鍵字
+          name: keyword
+          widget: string
+        hint: 補充 2–5 個相關關鍵字，例如「埔里小吃」、「埔里餐廳推薦」、「南投埔里美食」。
 
       - label: 地點 (中文顯示名稱)
         name: locationName
@@ -76,7 +93,43 @@ collections:
         name: coverAlt
         widget: string
         required: false
-        hint: 描述封面圖片內容（用於 SEO 與視覺障礙讀者的輔助說明）
+        hint: 圖片替代文字 Alt Text。請描述圖片實際內容，最好自然包含地點或店名，例如「製飯糰埔里店明太子炸蝦飯糰」。
+
+      - label: 社群分享標題
+        name: ogTitle
+        widget: string
+        required: false
+        hint: 分享到 LINE、Facebook、Threads 等平台時的標題；不填則使用 SEO 標題或文章標題。
+
+      - label: 社群分享描述
+        name: ogDescription
+        widget: string
+        required: false
+        hint: 分享連結時顯示的描述；不填則使用 Meta Description。
+
+      - label: 社群分享圖片
+        name: ogImage
+        widget: image
+        required: false
+        hint: 分享連結預覽用圖片；不填則使用封面圖片。
+
+      - label: 社群分享圖片 Alt 文字
+        name: ogImageAlt
+        widget: string
+        required: false
+        hint: 描述社群分享圖片內容；不填則使用封面圖片 Alt 文字。
+
+      - label: Canonical URL
+        name: canonicalUrl
+        widget: string
+        required: false
+        hint: 只有文章有重複來源或指定正式網址時才需要填；一般情況請留空。
+
+      - label: 不讓搜尋引擎索引
+        name: noindex
+        widget: boolean
+        default: false
+        hint: 測試頁、活動暫存頁才開啟；正式 SEO 文章請保持關閉。
 
       - label: 發布日期
         name: pubDate
@@ -94,4 +147,32 @@ collections:
       - label: 文章內文
         name: body
         widget: markdown
-        hint: 在這裡撰寫文章內容，支援標題、段落、圖片、清單等格式
+        hint: 在這裡撰寫文章內容。插入圖片時請填圖片替代文字 Alt Text，Markdown 格式是：![圖片描述](圖片網址)。
+
+      - label: SEO 上稿檢查
+        name: seoChecklist
+        widget: object
+        required: false
+        collapsed: true
+        hint: 發布前確認用，不會顯示在前台。
+        fields:
+          - label: 標題含主要關鍵字
+            name: titleIncludesKeyword
+            widget: boolean
+            default: false
+          - label: Meta Description 含主要關鍵字
+            name: descriptionIncludesKeyword
+            widget: boolean
+            default: false
+          - label: H2 / H3 小標含相關關鍵字
+            name: headingsIncludeKeywords
+            widget: boolean
+            default: false
+          - label: 文章圖片都有 Alt 文字
+            name: imagesHaveAltText
+            widget: boolean
+            default: false
+          - label: 已加入相關內部連結
+            name: internalLinksAdded
+            widget: boolean
+            default: false

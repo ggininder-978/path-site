@@ -7,13 +7,18 @@ interface Props {
   description: string;
   canonicalUrl?: string;
   ogImage?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImageAlt?: string;
   ogType?: 'website' | 'article';
   ogLocale?: string;
+  noindex?: boolean;
   // Article-specific props (for JSON-LD)
   articleData?: {
     pubDate?: Date;
     location?: string;
     keyword?: string;
+    secondaryKeywords?: string[];
   };
 }
 
@@ -22,8 +27,12 @@ const {
   description,
   canonicalUrl,
   ogImage = '/images/og-default.jpg',
+  ogTitle,
+  ogDescription,
+  ogImageAlt,
   ogType = 'website',
   ogLocale = 'zh_TW',
+  noindex = false,
   articleData,
 } = Astro.props;
 
@@ -40,6 +49,10 @@ const jsonLd = articleData
       description: description,
       datePublished: articleData.pubDate?.toISOString(),
       image: ogImageAbsolute,
+      keywords: [
+        articleData.keyword,
+        ...(articleData.secondaryKeywords ?? []),
+      ].filter(Boolean),
       contentLocation: {
         '@type': 'Place',
         name: articleData.location || '埔里',
@@ -72,11 +85,13 @@ const jsonLd = articleData
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph (Facebook, IG, 小紅書 link previews) -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={ogTitle ?? title} />
+    <meta property="og:description" content={ogDescription ?? description} />
     <meta property="og:image" content={ogImageAbsolute} />
+    {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
     <meta property="og:type" content={ogType} />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:url" content={canonical} />
@@ -84,9 +99,10 @@ const jsonLd = articleData
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={ogTitle ?? title} />
+    <meta name="twitter:description" content={ogDescription ?? description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
+    {ogImageAlt && <meta name="twitter:image:alt" content={ogImageAlt} />}
 
     <!-- JSON-LD Structured Data (Article + contentLocation for local/food SEO) -->
     {jsonLd && (

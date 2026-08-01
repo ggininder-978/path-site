@@ -25,22 +25,31 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const siteUrl = import.meta.env.SITE || 'https://path-site.com';
-const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const ogImage = post.data.coverImage
-  ? new URL(post.data.coverImage, siteUrl).href
+const canonicalUrl = post.data.canonicalUrl ?? new URL(Astro.url.pathname, siteUrl).href;
+const seoTitle = post.data.seoTitle
+  ? `${post.data.seoTitle} — PATH`
+  : `${post.data.title} — PATH`;
+const ogImageSource = post.data.ogImage ?? post.data.coverImage;
+const ogImage = ogImageSource
+  ? new URL(ogImageSource, siteUrl).href
   : undefined;
 ---
 
 <BaseLayout
-  title={`${post.data.title} — PATH`}
+  title={seoTitle}
   description={post.data.description}
   canonicalUrl={canonicalUrl}
   ogImage={ogImage}
+  ogTitle={post.data.ogTitle}
+  ogDescription={post.data.ogDescription}
+  ogImageAlt={post.data.ogImageAlt ?? post.data.coverAlt}
   ogType="article"
+  noindex={post.data.noindex}
   articleData={{
     pubDate: post.data.pubDate,
     location: post.data.locationName,
     keyword: post.data.keyword,
+    secondaryKeywords: post.data.secondaryKeywords,
   }}
 >
   <article>

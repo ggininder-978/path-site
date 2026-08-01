@@ -1,13 +1,25 @@
 ---
 title: "2026 埔里美食推薦｜在地人嚴選 15 間埔里必吃餐廳、古早味小吃、特色咖啡廳"
+seoTitle: "2026 埔里美食推薦｜15 間必吃餐廳、小吃、早午餐"
 description: "來埔里，怎能錯過道地的埔里美食？這篇嚴選 15 間埔里必吃餐廳、古早味小吃與特色咖啡廳，帶你從早餐一路吃到甜點晚餐。"
 keyword: "埔里美食"
+secondaryKeywords:
+  - "埔里早午餐"
+  - "埔里餐廳推薦"
+  - "埔里小吃"
+  - "南投埔里美食"
 locationName: "埔里"
 locationSlug: "puli"
 coverImage: "/images/eats/puli/nantou-puli-food/001-Snapinsta.app_368432225_285870030807086_5672242023705206723_n_1080-7-1.jpg"
 coverAlt: "製飯糰 Riceball 埔里店手作飯糰品牌照片"
 pubDate: 2026-08-02
 draft: false
+seoChecklist:
+  titleIncludesKeyword: true
+  descriptionIncludesKeyword: true
+  headingsIncludeKeywords: true
+  imagesHaveAltText: true
+  internalLinksAdded: false
 ---
 
 來埔里，怎能錯過道地的埔里美食呢？2026 埔里美食推薦來啦！這篇文章嚴選 15 間不容錯過的埔里美食！公開埔里老闆的口袋名單，從經典的古早味小吃到特色咖啡廳，通通濃縮在這篇埔里美食指南。
