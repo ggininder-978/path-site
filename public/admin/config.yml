@@ -16,9 +16,18 @@ backend:
   base_url: https://path-site-gilt.vercel.app
   auth_endpoint: /api/auth
 
+site_url: https://path-site-gilt.vercel.app
+display_url: https://path-site-gilt.vercel.app
+
 # Media files — uploaded images go here (relative to project root)
 media_folder: public/images/eats/puli
 public_folder: /images/eats/puli
+
+# Use URL-safe filenames for uploaded media and article slugs.
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
 
 # Locale for the CMS editor UI
 locale: zh_Hant
