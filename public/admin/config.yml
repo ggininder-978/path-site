@@ -137,6 +137,7 @@ collections:
       - label: 不讓搜尋引擎索引
         name: noindex
         widget: boolean
+        required: false
         default: false
         hint: 測試頁、活動暫存頁才開啟；正式 SEO 文章請保持關閉。
 
@@ -150,8 +151,9 @@ collections:
       - label: 草稿
         name: draft
         widget: boolean
+        required: false
         default: false
-        hint: 開啟「草稿」代表這篇文章不會公開顯示，可以先儲存、之後再發布
+        hint: 開啟「草稿」代表這篇文章不會公開顯示；正式要上線時請關閉草稿後按發佈。
 
       - label: 文章內文
         name: body
@@ -168,20 +170,25 @@ collections:
           - label: 標題含主要關鍵字
             name: titleIncludesKeyword
             widget: boolean
+            required: false
             default: false
           - label: Meta Description 含主要關鍵字
             name: descriptionIncludesKeyword
             widget: boolean
+            required: false
             default: false
           - label: H2 / H3 小標含相關關鍵字
             name: headingsIncludeKeywords
             widget: boolean
+            required: false
             default: false
           - label: 文章圖片都有 Alt 文字
             name: imagesHaveAltText
             widget: boolean
+            required: false
             default: false
           - label: 已加入相關內部連結
             name: internalLinksAdded
             widget: boolean
+            required: false
             default: false
